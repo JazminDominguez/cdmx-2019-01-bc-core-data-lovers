@@ -1,24 +1,34 @@
+
+
+/*const datos = 
+fetch(url)
+.then(response=> response.json())
+.then(json => json.data)
+.then(data => window.lol.iterarData(data))
+.then(datos => console.log(data).then(datos))*/
+
+//console.log(datos)
+//.then(printJson => print(printJson))
+//.then(rol =>selectByRol(rol)) 
+//.catch(err=>(err))
+
+
+
 /* Convierte la base de datos en una variable*/
-const dataLol = window.LOL.data;
+//const dataLol = window.LOL.data
 
 //Trae el resultado de la función filtrado de data.js
-const datos = window.lol.iterarData(dataLol)
-
+//const datos = window.lol.iterarData(dataLol)
 /*trae el div de nombre "es" para identificarlo e imprimirlo ahí*/
 const showFirstChampionList = document.getElementById('showFirstChampionList')
-
 //Trae la class que contiene el rol de la lista del menú desplegable 
 const rol = document.getElementsByClassName("rolPersonajes");
-
 //Trae cada personaje para la iteración por clase
 const characterFromList = document.getElementsByClassName("nameList");
-
-
 //almacena en variable los id del primer evento de cambio de pantalla, la interacción para abrir y cerrar el menú
 const inicio = document.getElementById('inicio');
 const menu = document.getElementById('menu');
 const cerrar = document.getElementById('titleChampions');
-
 const welcome = document.getElementById('welcomeMssg');
 const printRolTitle = document.getElementById('rolTitle');
 const home = document.getElementById('home');
@@ -26,10 +36,6 @@ const home = document.getElementById('home');
 const buttonDifficultyAsc = document.getElementById('difficultyAsc');
 const buttonDifficultyDsc = document.getElementById('difficultyDsc');
 const statsAverage = document.getElementById('statsAverage');
-
-//Trae los divs de cada personaje
-//const character = document.getElementById('character')
-
 //almacena el valor del input para la busqueda por nombre
 const searchInput = document.getElementById("searchInput")
 
@@ -60,7 +66,7 @@ cerrar.onmouseover = () => {
 };
 // Link que lleva a la home
 home.onclick = () => {
-  print(datos);
+  print(dataLol);
   document.getElementById("mySidenav").style.width = "0px";
   printRolTitle.style.display = "none";
   welcome.style.display = 'block';
@@ -95,7 +101,6 @@ const print = (datos) => {
     })
   }
 };
-print(datos)
 
 
 //---------------------2do Print------------------------------------------------------//
@@ -136,7 +141,7 @@ const selectByRol = () => {
       printRolTitle.innerHTML = "";
       printRolTitle.insertAdjacentHTML("beforeend", rolId);
 
-      const arrayRolesFiltered = window.lol.filtroDataRoles(rolId, datos);
+      const arrayRolesFiltered = window.lol.filtroDataRoles(rolId, dataLol);
       document.getElementById("welcomeMssg").style.display = 'none';
       printRolTitle.style.display = "block";
       print(arrayRolesFiltered);
@@ -149,7 +154,7 @@ const searchByName = () => {
   searchInput.addEventListener("keyup", () => {
     let searchValue = searchInput.value;
     printRolTitle.innerHTML = "";
-    const showSearch = window.lol.filterByName(searchValue, datos);
+    const showSearch = window.lol.filterByName(searchValue,dataLol);
     document.getElementById("welcomeMssg").style.display = 'none';
     printRolTitle.style.display = "block";
     print(showSearch);
@@ -175,7 +180,7 @@ searchByName();
 const difficultyAsc = () => {
     buttonDifficultyAsc.addEventListener('click', () => {
       printRolTitle.innerHTML = "Lower to Higher";
-      const diffA = window.lol.sortByDifficulty(1,datos);
+      const diffA = window.lol.sortByDifficulty(1,dataLol);
       document.getElementById("welcomeMssg").style.display = 'none';
       printRolTitle.style.display= "block";
       print(diffA);
@@ -185,7 +190,7 @@ const difficultyAsc = () => {
     const difficultyDsc = () => {
       buttonDifficultyDsc.addEventListener('click', () => {
         printRolTitle.innerHTML = "Higher to Lower";
-        const diffD = window.lol.sortByDifficulty(-1,datos);
+        const diffD = window.lol.sortByDifficulty(-1,dataLol);
         document.getElementById("welcomeMssg").style.display = 'none';
         printRolTitle.style.display= "block";
         print(diffD);
@@ -195,7 +200,42 @@ const difficultyAsc = () => {
 
 statsAverage.addEventListener('click', () => {
   showFirstChampionList.innerHTML ="";
-  const showAttackAverage = window.lol.averageAttack(datos);
+  const showAttackAverage = window.lol.averageAttack(dataLol);
   printRolTitle.innerHTML= "Miscellaneous"
   showFirstChampionList.innerHTML =` <div class="nameList"><div class="rolPersonajes"> Average Attack: <br> ${showAttackAverage}</div></div>`
 })
+
+//ejecución del fetch json
+const url ="./data/lol/lol.json"
+fetch(url)
+
+let dataLol = ()=>{
+fetch(url)
+.then(response=> response.json())
+.then(json => json.data)
+.then(data => { dataLol = window.lol.iterarData(data)
+  return dataLol; })}
+
+
+
+fetch(url)
+.then(response=> response.json())
+.then(json => json.data)
+.then(data => { dataLol = window.lol.iterarData(data)
+  return dataLol; })
+.then(printJson => print(printJson))
+
+.then (sortA => difficultyAsc(sortA))
+.then (sortD => difficultyDsc(sortD))
+.then (sortDifficulty => window.lol.sortByDifficulty(sortDifficulty))
+
+.then (toselectByRol => selectByRol(toselectByRol))
+.then (filterByRol => window.lol.filtroDataRoles(filterByRol))
+
+.then(searchByNameJson => searchByName(searchByNameJson))
+.then (toFilterByName => window.lol.filterByName(toFilterByName))
+
+
+//.then (sortA => difficultyAsc(dataLol))
+//.then (sortB => difficultyDsc(dataLol))
+//.then (average => averageAttack(dataLol))

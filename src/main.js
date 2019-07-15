@@ -37,16 +37,16 @@ const searchInput = document.getElementById("searchInput")
 //vuelve la base de datos a un arreglo
 //const dataToArray = Object.values(dataLol); 
 
-//Funcion de botones
-//click que hace cambio de la primera pantalla a la lista de personajes
 
-inicio.onclick = () => {
-  document.getElementById("primera-pantalla").style.display = 'none';
-  document.getElementById("fondo-de-lista-de-campeones").style.display = 'block';
-};
 
+
+// SIDEBAR
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems, {});
+});
 // función del menú desplegable donde se encuentran los roles para filtrar 
-
+/*
 menu.onmouseover = () => {
   document.getElementById("mySidenav").style.width = "75%";
 };
@@ -66,7 +66,7 @@ home.onclick = () => {
   welcome.style.display = 'block';
 
 
-}
+}*/
 
 /* ----------------------------------------------*/
 //función que despliega la info del personaje al dar click
@@ -74,8 +74,6 @@ home.onclick = () => {
 
 // const arrayRolesFiltered = window.lol.filtroDataRoles(rolId, datos);
 //print(arrayRolesFiltered);})}}
-
-
 
 
 // función que imprime la primera iteración que da la lista completa de campeones
@@ -90,7 +88,6 @@ const print = (datos) => {
 
       let characterId = characterFromList[i].id;
       const elementChampion = window.lol.selectCharacter(characterId, datos);
-      document.getElementById("welcomeMssg").style.display = 'none';
       printCharacterSheet(elementChampion);
     })
   }
@@ -104,14 +101,49 @@ const printCharacterSheet = (datos) => {
   showFirstChampionList.innerHTML = "";
   printRolTitle.innerHTML = "";
   datos.forEach(champ => {
-    let nameList = `<div id="${champ.id}" class="champInfo"><div class="nameList">
-   <img class="splashPresentation" src="${champ.splash}">
-   <h1 id= "nombre" >${champ.name}</h1> <p id="titulo">${champ.title}</p></div><div class="nameList"><p id="title" class="rolTitle">ROL</p><h3 class="rolTitle">${champ.tags}</h3></div>
-   <div id="statsInfo1" class="nameList"><div class="stats"><p>Attack: ${champ.attack}</p><p>Defense: ${champ.defense}</p>
-   <p>Magic: ${champ.magic}</p><p>Difficulty: ${champ.difficulty}</p></div></div>
-   <div id="allStats" class="nameList"><div id="statsInfo2" class="stats"><h2>Stats</h2><p>Hp:<br>${champ.hp}</p><p>Hp per level:<br>${champ.hpperlevel}</p><p>Hp regeneration:<br>${champ.hpregen}</p><p>Hp regen per level:<br>${champ.hpregenperlevel}</p>
-   <p>Mp:<br>${champ.mp}</p><p>Mp per level:<br>${champ.mpperlevel}</p><p>Mp regeneration:<br>${champ.mpregen}</p><p>Mp regen per level:<br>${champ.mpregenperlevel}</p></div>
-   <div id="statsInfo3" class="stats" class="statsOrder"><p>Movespeed:<br>${champ.movespeed}</p> <p>Armor:<br>${champ.armor}</p><p>Armor per level:<br>${champ.armorperlevel}</p><p>Attack Range:<br>${champ.attackrange}</p><p>Attack Damage:<br>${champ.attackdamage}</p><p>Attack Damage per level:<br>${champ.attackdamageperlevel}</p></div></div>  <h3 id="blurb" class="nameList">${champ.blurb}</h3></div></div>`;
+    let nameList = 
+  `<div id="${champ.id}" class="champInfo">
+    <div class="nameList">
+      <img class="splashPresentation" src="${champ.splash}">
+      <h1 id= "nombre" >${champ.name}</h1>
+      <p id="titulo">${champ.title}</p>
+    </div>
+    <div class="rolSection">
+      <p id="title" class="rolTitle">ROL</p>
+      <div class="rolTitle">${champ.tags}</div>
+    </div>
+    <div id="statsInfo1" class="nameList">
+      <div class="stats">
+       <p>Attack: ${champ.attack}</p>
+       <p>Defense: ${champ.defense}</p>
+       <p>Magic: ${champ.magic}</p>
+       <p>Difficulty: ${champ.difficulty}</p>
+      </div>
+    </div>
+   <div id="allStats" class="generalStats">
+    <div id="statsInfo2" class="stats">
+      <h4>Stats</h4>
+      <p>Hp:<br>${champ.hp}</p>
+      <p>Hp per level:<br>${champ.hpperlevel}</p>
+      <p>Hp regeneration:<br>${champ.hpregen}</p>
+      <p>Hp regen per level:<br>${champ.hpregenperlevel}</p>
+      <p>Mp:<br>${champ.mp}</p>
+      <p>Mp per level:<br>${champ.mpperlevel}</p>
+      <p>Mp regeneration:<br>${champ.mpregen}</p>
+      <p>Mp regen per level:<br>${champ.mpregenperlevel}</p>
+    </div>
+    <div id="statsInfo3" class="stats" class="statsOrder">
+      <p>Movespeed:<br>${champ.movespeed}</p>
+      <p>Armor:<br>${champ.armor}</p>
+      <p>Armor per level:<br>${champ.armorperlevel}</p>
+      <p>Attack Range:<br>${champ.attackrange}</p>
+      <p>Attack Damage:<br>${champ.attackdamage}</p>
+      <p>Attack Damage per level:<br>${champ.attackdamageperlevel}</p>
+    </div>
+   </div>
+   <div id="blurb" class="blurbSection">${champ.blurb}</div>
+   </div>
+   </div>`;
     showFirstChampionList.insertAdjacentHTML("beforeend", nameList);
   });
 }
@@ -132,12 +164,10 @@ const selectByRol = () => {
   for (let i = 0; i < rol.length; i++) {
     rol[i].addEventListener('click', () => {
       let rolId = rol[i].id;
-      document.getElementById("mySidenav").style.width = "0%";
       printRolTitle.innerHTML = "";
       printRolTitle.insertAdjacentHTML("beforeend", rolId);
 
       const arrayRolesFiltered = window.lol.filtroDataRoles(rolId, datos);
-      document.getElementById("welcomeMssg").style.display = 'none';
       printRolTitle.style.display = "block";
       print(arrayRolesFiltered);
     })
@@ -150,7 +180,6 @@ const searchByName = () => {
     let searchValue = searchInput.value;
     printRolTitle.innerHTML = "";
     const showSearch = window.lol.filterByName(searchValue, datos);
-    document.getElementById("welcomeMssg").style.display = 'none';
     printRolTitle.style.display = "block";
     print(showSearch);
   })
@@ -176,7 +205,6 @@ const difficultyAsc = () => {
     buttonDifficultyAsc.addEventListener('click', () => {
       printRolTitle.innerHTML = "Lower to Higher";
       const diffA = window.lol.sortByDifficulty(1,datos);
-      document.getElementById("welcomeMssg").style.display = 'none';
       printRolTitle.style.display= "block";
       print(diffA);
     })};
@@ -186,7 +214,6 @@ const difficultyAsc = () => {
       buttonDifficultyDsc.addEventListener('click', () => {
         printRolTitle.innerHTML = "Higher to Lower";
         const diffD = window.lol.sortByDifficulty(-1,datos);
-        document.getElementById("welcomeMssg").style.display = 'none';
         printRolTitle.style.display= "block";
         print(diffD);
       })};
